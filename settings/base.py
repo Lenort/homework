@@ -13,12 +13,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 import sys
 
+
+from settings.conf import * 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(BASE_DIR)
-sys.path.append(os.path.join(BASE_DIR,'apps'))
 
 
+ROOT_URLCONF = 'settings.urls'
+AUTH_USER_MODEL = 'auths.CustomUser'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -30,28 +32,35 @@ SECRET_KEY = 'django-insecure-lx$j%118f^n+cvjrgx3l2udb2)&95+lbyyiw@*b0(y=3_^uwbf
 DEBUG = True
 
 ALLOWED_HOSTS = []
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
-
-# My settings
-ADMIN_SITE_URL = 'custom_admin/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # Application definition
+sys.path.append(BASE_DIR)
+sys.path.append(os.path.join(BASE_DIR,'apps'))
 
-DJANGO_AND_THIRD_PARTY_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'django_extensions',
+
 ]
 
 PROJECT_APPS = [
-    'my_new_app.apps.MyNewAppConfig',
-    'abstracts.apps.AbstractsConfig'
+    'firstapp.apps.FirstappConfig',
+    'abstracts.apps.AbstractsConfig',
+    'auths.apps.AuthsConfig',
 ]
 
-INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECT_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,8 +70,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
+AUTH_USER_MODEL = 'auths.CustomUser'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 ROOT_URLCONF = 'urls.urls'
 
 TEMPLATES = [
@@ -85,18 +97,18 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -113,32 +125,3 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
-ADMIN_SITE_URL = 'host'
-
-LANGUAGE_CODE = 'ru'
-
-TIME_ZONE = 'Asia/Almaty'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-STATIC_URL = '/static/'
-STATIC_ROOT = "./apps/my_new_app/static/"
